@@ -31,6 +31,7 @@ public class ClientController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public Mono<Void> registerClient(@RequestBody Client client) {
+        client.setId(null);
         return clientRepository.findBySsn(client.getSsn())
                 .map(cl -> {
                     throw new SsnAlreadyExistsException(client.getSsn());

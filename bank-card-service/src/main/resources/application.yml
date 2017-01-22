@@ -9,3 +9,7 @@ spring:
   data:
     mongodb:
       database: test
+
+service:
+  withdrawal:
+    account-credit-limit: 5000 # User can't withdraw money having 5000$ debt on their account
