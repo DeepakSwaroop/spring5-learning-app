@@ -4,3 +4,8 @@ server:
 services:
   bank-info-service-port: 8082
   bank-card-service-port: 8081
+
+spring:
+  data:
+    mongodb:
+      database: test
