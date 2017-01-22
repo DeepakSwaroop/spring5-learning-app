@@ -1,13 +1,11 @@
 package com.ildar.learning;
 
-/**
- * Hello world!
- *
- */
-public class GatewayServiceApp
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class GatewayServiceApp {
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayServiceApp.class, args);
     }
 }

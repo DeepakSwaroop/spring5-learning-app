@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+services:
+  client-info-service-port: 8083
+  bank-info-service-port: 8082
+
+spring:
+  data:
+    mongodb:
+      database: test

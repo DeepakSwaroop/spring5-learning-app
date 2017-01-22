@@ -1,0 +1,6 @@
+server:
+  port: 8083
+
+services:
+  bank-info-service-port: 8082
+  bank-card-service-port: 8081
