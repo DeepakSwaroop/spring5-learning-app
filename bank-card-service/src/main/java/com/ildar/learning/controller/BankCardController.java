@@ -10,10 +10,14 @@ import com.ildar.learning.dto.FullBankCardInfo;
 import com.ildar.learning.repository.ReactiveBankCardRepository;
 import com.ildar.learning.service.BankService;
 import com.ildar.learning.service.ClientService;
+import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 /**
  * Created by Ildar on 1/23/2017.
@@ -47,6 +51,31 @@ public class BankCardController {
                             .map(tuple -> FullBankCardInfo.from(bankCard, tuple.getT1(), tuple.getT2()));
                 })
                 .single();
+    }
+
+    @GetMapping("/findByClient")
+    public Flux<FullBankCardInfo> findCardsByClientId(@RequestParam("clientId") String clientId) {
+        return clientService.getById(clientId)
+                .map(cardHolder -> FullBankCardInfo.builder().cardHolder(cardHolder))
+                .flatMap(builder -> cardsOfClient(clientId, builder))
+                .flatMap(this::setBank)
+                .map(builder -> builder.build());
+    }
+
+    private Mono<FullBankCardInfo.FullBankCardInfoBuilder> setBank(Pair<FullBankCardInfo.FullBankCardInfoBuilder, BankCard> tuple) {
+        return bankService.getById(tuple.getSecond().getBankIssuerId())
+                .map(bank -> tuple.getFirst().bankIssuer(bank));
+    }
+
+    private Flux<Pair<FullBankCardInfo.FullBankCardInfoBuilder, BankCard>> cardsOfClient(String clientId,
+                                                                                FullBankCardInfo.FullBankCardInfoBuilder builder) {
+        return bankCardRepository.findByClientId(clientId)
+                .map(card -> Pair.of(builder
+                        .paymentServiceProvider(card.getPaymentServiceProvider())
+                        .currentSum(card.getCurrentSum())
+                        .cardAccountType(card.getCardAccountType())
+                        .bankCardId(card.getId()),
+                        card));
     }
 
     @PostMapping("/")

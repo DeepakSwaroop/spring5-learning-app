@@ -45,6 +45,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
     private String url() {
-        return "http://localhost:" + bankInfoServicePort + "/";
+        return "http://localhost:" + bankInfoServicePort + "/clients/";
     }
 }

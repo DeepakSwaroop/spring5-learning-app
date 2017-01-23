@@ -45,6 +45,6 @@ public class BankServiceImpl implements BankService {
     }
 
     private String url() {
-        return "http://localhost:" + bankInfoServicePort + "/";
+        return "http://localhost:" + bankInfoServicePort + "/banks/";
     }
 }
