@@ -34,6 +34,16 @@ public class ClientServiceImpl implements ClientService {
                 .single();
     }
 
+    @Override
+    public Mono<Boolean> clientExists(String clientId) {
+        val request = ClientRequest.GET(url() + "{clientId}/exists", clientId)
+                .build();
+
+        return webClient.exchange(request)
+                .flatMap(response -> response.bodyToMono(Boolean.class))
+                .single();
+    }
+
     private String url() {
         return "http://localhost:" + bankInfoServicePort + "/";
     }

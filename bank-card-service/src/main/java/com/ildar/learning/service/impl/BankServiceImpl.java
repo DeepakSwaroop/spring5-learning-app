@@ -34,6 +34,16 @@ public class BankServiceImpl implements BankService {
                 .single();
     }
 
+    @Override
+    public Mono<Boolean> bankExists(String bankIssuerId) {
+        val request = ClientRequest.GET(url() + "{bankId}/exists", bankIssuerId)
+                .build();
+
+        return webClient.exchange(request)
+                .flatMap(response -> response.bodyToMono(Boolean.class))
+                .single();
+    }
+
     private String url() {
         return "http://localhost:" + bankInfoServicePort + "/";
     }

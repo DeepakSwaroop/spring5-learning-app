@@ -19,17 +19,24 @@ public class ClientController {
     @Autowired
     private ReactiveClientRepository clientRepository;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping("/{id}")
     public Mono<Client> findById(@PathVariable String id) {
         return clientRepository.findOne(id);
     }
 
-    @RequestMapping(value = "/findByBankId", method = RequestMethod.GET)
+    @GetMapping("/{id}/exists")
+    public Mono<Boolean> clientExists(@PathVariable String id) {
+        return findById(id)
+                .map(b -> true)
+                .otherwiseIfEmpty(Mono.just(false));
+    }
+
+    @GetMapping("/findByBankId")
     public Flux<Client> findByBankId(@RequestParam("bankId") String bankId) {
         return clientRepository.findByBankId(bankId);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @PostMapping("/")
     public Mono<Void> registerClient(@RequestBody Client client) {
         client.setId(null);
         return clientRepository.findBySsn(client.getSsn())

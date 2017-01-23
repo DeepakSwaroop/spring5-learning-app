@@ -18,17 +18,24 @@ public class BankController {
     @Autowired
     private ReactiveBankRepository bankRepository;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping("/{id}")
     public Mono<Bank> findById(@PathVariable String id) {
         return bankRepository.findOne(id);
     }
 
-    @RequestMapping(value = "/findByName", method = RequestMethod.GET)
+    @GetMapping("/{id}/exists")
+    public Mono<Boolean> bankExists(@PathVariable String id) {
+        return findById(id)
+                .map(b -> true)
+                .otherwiseIfEmpty(Mono.just(false));
+    }
+
+    @GetMapping("/findByName")
     public Flux<Bank> findByName(@RequestParam("name") String name) {
         return bankRepository.findByName(name);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping("/")
     public Mono<Void> createBank(@RequestBody Mono<Bank> reqBank) {
         return reqBank
                 .map(bank -> {

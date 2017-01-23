@@ -1,5 +1,7 @@
 package com.ildar.learning.controller;
 
+import com.ildar.learning.controller.exception.BankNotExistException;
+import com.ildar.learning.controller.exception.ClientNotExistException;
 import com.ildar.learning.domain.BankCard;
 import com.ildar.learning.dto.Bank;
 import com.ildar.learning.dto.BankCardDTO;
@@ -27,7 +29,7 @@ public class BankCardController {
     @Autowired
     private ReactiveBankCardRepository bankCardRepository;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping("/{id}")
     public Mono<FullBankCardInfo> formFullBankCardInfo(@PathVariable String bankCardId) {
         /*
         3 steps involved here:
@@ -47,12 +49,23 @@ public class BankCardController {
                 .single();
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public Mono<Void> createCard(@RequestBody Mono<BankCardDTO> bankCard) {
-        //todo check that given bank and client do exist
-        return bankCard
+    @PostMapping("/")
+    public Mono<String> createCard(@RequestBody Mono<BankCardDTO> bankCardDto) {
+        //todo check that all bankCard fields are not null
+        return bankCardDto
+                .flatMap(this::checkBankAndClientExist)
                 .map(BankCard::from)
-                .map(card -> bankCardRepository.save(card))
-                .then();
+                .flatMap(card -> bankCardRepository.save(card))
+                .map(BankCard::getId)
+                .single();
+    }
+
+    private Mono<BankCardDTO> checkBankAndClientExist(BankCardDTO card) {
+        Mono<Boolean> bankExists = bankService.bankExists(card.getBankIssuerId())
+                .otherwiseIfEmpty(Mono.error(new BankNotExistException(card.getBankIssuerId())));
+        Mono<Boolean> clientExists = clientService.clientExists(card.getClientId())
+                .otherwiseIfEmpty(Mono.error(new ClientNotExistException(card.getClientId())));
+
+        return bankExists.and(clientExists).then(Mono.just(card));
     }
 }

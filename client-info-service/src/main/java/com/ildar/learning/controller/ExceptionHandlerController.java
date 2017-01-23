@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionHandlerController {
 
-    @ExceptionHandler
+    @ExceptionHandler(SsnAlreadyExistsException.class)
     public ResponseEntity<String> handleSsnAlreadyExists(SsnAlreadyExistsException exc) {
         return new ResponseEntity<>("SSN already exists: " + exc.getSsn(), HttpStatus.FORBIDDEN);
     }

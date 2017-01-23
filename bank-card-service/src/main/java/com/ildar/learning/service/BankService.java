@@ -12,4 +12,6 @@ public interface BankService {
      * Retrieve bank instance from bank-info-service by its ID
      */
     Mono<Bank> getById(String bankId);
+
+    Mono<Boolean> bankExists(String bankIssuerId);
 }

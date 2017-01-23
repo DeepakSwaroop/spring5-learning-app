@@ -12,4 +12,6 @@ public interface ClientService {
      * Retrieve client instance from client-info-service by its ID
      */
     Mono<Client> getById(String clientId);
+
+    Mono<Boolean> clientExists(String clientId);
 }
