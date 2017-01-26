@@ -1,5 +1,7 @@
-package com.ildar.learning.dto;
+package com.ildar.learning.dto.card;
 
+import com.ildar.learning.dto.bank.Bank;
+import com.ildar.learning.dto.client.Client;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;

@@ -1,7 +1,7 @@
 package com.ildar.learning.service;
 
-import com.ildar.learning.dto.FullBankCardInfo;
-import com.ildar.learning.dto.NewCardDTO;
+import com.ildar.learning.dto.card.FullBankCardInfo;
+import com.ildar.learning.dto.card.NewCardDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

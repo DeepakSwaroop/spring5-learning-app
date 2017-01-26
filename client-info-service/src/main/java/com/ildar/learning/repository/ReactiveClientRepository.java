@@ -12,5 +12,5 @@ public interface ReactiveClientRepository extends ReactiveCrudRepository<Client,
 
     Flux<Client> findByBankId(String bankId);
 
-    Mono<Client> findBySsn(String ssn);
+    Mono<Client> findBySsnAndBankId(String ssn, String bankId);
 }

@@ -1,4 +1,4 @@
-package com.ildar.learning.dto;
+package com.ildar.learning.dto.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

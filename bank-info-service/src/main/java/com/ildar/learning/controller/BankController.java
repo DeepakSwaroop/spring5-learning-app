@@ -18,6 +18,11 @@ public class BankController {
     @Autowired
     private ReactiveBankRepository bankRepository;
 
+    @GetMapping("/")
+    public Flux<Bank> allBanks() {
+        return bankRepository.findAll();
+    }
+
     @GetMapping("/{id}")
     public Mono<Bank> findById(@PathVariable String id) {
         return bankRepository.findOne(id);

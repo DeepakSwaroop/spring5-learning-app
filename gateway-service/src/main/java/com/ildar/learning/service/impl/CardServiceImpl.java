@@ -1,7 +1,7 @@
 package com.ildar.learning.service.impl;
 
-import com.ildar.learning.dto.FullBankCardInfo;
-import com.ildar.learning.dto.NewCardDTO;
+import com.ildar.learning.dto.card.FullBankCardInfo;
+import com.ildar.learning.dto.card.NewCardDTO;
 import com.ildar.learning.service.CardService;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
